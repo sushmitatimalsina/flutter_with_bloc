@@ -2,31 +2,28 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;
-  final String? errorText;
+  final String? initialValue;
   final bool obscureText;
-  final TextInputType keyboardType;
-  final ValueChanged<String>? onChanged;
+  final ValueChanged<String> onChanged;
 
   const CustomTextField({
     super.key,
     required this.label,
-    this.errorText,
+    this.initialValue,
     this.obscureText = false,
-    this.keyboardType = TextInputType.text,
-    this.onChanged,
+    required this.onChanged,
   });
+
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      initialValue: initialValue,
+      obscureText: obscureText,
       decoration: InputDecoration(
         labelText: label,
-        errorText: errorText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       ),
-      obscureText: obscureText,
-      keyboardType: keyboardType,
       onChanged: onChanged,
     );
   }
