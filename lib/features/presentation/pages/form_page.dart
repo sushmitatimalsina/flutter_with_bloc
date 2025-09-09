@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'my_form_bloc.dart';
-import 'form_event.dart';
-import 'form_state.dart';
-import '../../../core/utils/custom_text_field.dart';
-import '../../../core/utils/custom_button.dart';
+import '../../data/datasource/local_form_datasource.dart';
+import '../bloc/form_bloc.dart';
+import '../bloc/form_event.dart';
+import '../bloc/form_state.dart';
+import '../../../../core/utils/custom_text_field.dart';
+import '../../../../core/utils/custom_button.dart';
+import '../../../../core/utils/string_const.dart';
 
 class MyFormPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => MyFormBloc(),
+      create: (_) => MyFormBloc(LocalFormRepository()),
       child: Scaffold(
         appBar: AppBar(title: Text('BLoC Form Example')),
         body: Padding(
@@ -19,7 +21,7 @@ class MyFormPage extends StatelessWidget {
             listener: (context, state) {
               if (state.isSuccess) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Form submitted and saved locally!')),
+                  SnackBar(content: Text("Form saved successfully! ✅")),
                 );
               } else if (state.errorMessage != null) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -31,30 +33,27 @@ class MyFormPage extends StatelessWidget {
               return Column(
                 children: [
                   CustomTextField(
-                    label: 'Name',
-                    initialValue: state.name,
+                    label: Name,
                     onChanged: (val) =>
                         context.read<MyFormBloc>().add(NameChanged(val)),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   CustomTextField(
-                    label: 'Email',
-                    initialValue: state.email,
+                    label: Email,
                     onChanged: (val) =>
                         context.read<MyFormBloc>().add(EmailChanged(val)),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                   CustomButton(
-                    text: state.isSubmitting ? 'Saving...' : 'Submit',
+                    text: state.isSubmitting ? "Saving..." : Submit,
                     onPressed: state.isValid && !state.isSubmitting
                         ? () =>
                             context.read<MyFormBloc>().add(FormSubmitted())
-                        : () {},
+                        : null,
                   ),
-                  const SizedBox(height: 20),
-                  Text('Saved Data:'),
-                  Text('Name: ${state.name}'),
-                  Text('Email: ${state.email}'),
+                  SizedBox(height: 20),
+                  Text("Current Name: ${state.name}"),
+                  Text("Current Email: ${state.email}"),
                 ],
               );
             },
