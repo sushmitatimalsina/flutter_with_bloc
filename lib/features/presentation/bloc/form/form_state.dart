@@ -1,7 +1,6 @@
 class FormState {
   final String name;
   final String email;
-  final bool isValid;
   final bool isSubmitting;
   final bool isSuccess;
   final String? errorMessage;
@@ -9,7 +8,6 @@ class FormState {
   FormState({
     this.name = '',
     this.email = '',
-    this.isValid = false,
     this.isSubmitting = false,
     this.isSuccess = false,
     this.errorMessage,
@@ -18,7 +16,6 @@ class FormState {
   FormState copyWith({
     String? name,
     String? email,
-    bool? isValid,
     bool? isSubmitting,
     bool? isSuccess,
     String? errorMessage,
@@ -26,10 +23,11 @@ class FormState {
     return FormState(
       name: name ?? this.name,
       email: email ?? this.email,
-      isValid: isValid ?? this.isValid,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       isSuccess: isSuccess ?? this.isSuccess,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
+
+  bool get isValid => name.isNotEmpty && email.contains('@');
 }
